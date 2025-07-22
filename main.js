@@ -14,7 +14,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // CesiumJS setup
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5MTcwNjU5Yi01YzI4LTQwZjMtYjQ4Ni01Mjc1ZDMyMjQzMGYiLCJpZCI6MzIzNjc3LCJpYXQiOjE3NTMxNTE4Njd9.erPvEBzQ0CkCZ2bwdcOQQrsK-EFvgAEwjJUEHYxcS7sOKEN';
+Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2ODljNTg1ZS1hYzBiLTQzZGUtOWI4Ni1mMGQyODM5YzFhZmUiLCJpZCI6MzIzNjc3LCJpYXQiOjE3NTMxNTM5NDh9.WXILGF9zFsQLUbvHZjp3YIQfusw1LmNrN1PS9Jf_9Q8';
 const viewer = new Cesium.Viewer('cesiumContainer', {
     terrainProvider: Cesium.createWorldTerrain()
 });
