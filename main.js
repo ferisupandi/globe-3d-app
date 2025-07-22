@@ -48,40 +48,29 @@ db.collection("locations").get().then((querySnapshot) => {
 
 // Handle form submission
 document.getElementById("coordForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+    e.preventDefault();
+    const lat = parseFloat(document.getElementById("latitude").value);
+    const lon = parseFloat(document.getElementById("longitude").value);
 
-  const latDeg = parseFloat(document.getElementById("latDeg").value);
-  const latMin = parseFloat(document.getElementById("latMin").value);
-  const latSec = parseFloat(document.getElementById("latSec").value);
-  const lonDeg = parseFloat(document.getElementById("lonDeg").value);
-  const lonMin = parseFloat(document.getElementById("lonMin").value);
-  const lonSec = parseFloat(document.getElementById("lonSec").value);
+    if (isValidCoordinate(lat, lon)) {
+        // Add to Cesium globe
+        viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(lon, lat),
+            point: { pixelSize: 10, color: Cesium.Color.BLUE },
+            label: { text: `(${lat.toFixed(5)}, ${lon.toFixed(5)})` }
+        });
 
-  const lat = dmsToDecimal(latDeg, latMin, latSec);
-  const lon = dmsToDecimal(lonDeg, lonMin, lonSec);
-
-  if (isValidCoordinate(lat, lon)) {
-    viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(lon, lat),
-      point: { pixelSize: 10, color: Cesium.Color.BLUE },
-      label: { text: `(${lat.toFixed(5)}, ${lon.toFixed(5)})` }
-    });
-
-    db.collection("locations").add({
-      latitude: lat,
-      longitude: lon,
-      timestamp: new Date()
-    }).then(() => {
-      console.log("Location saved:", lat, lon);
-    }).catch((error) => {
-      console.error("Error saving location:", error);
-    });
-  } else {
-    alert("Koordinat tidak valid. Pastikan nilai latitude dan longitude benar.");
-  }
+        // Save to Firestore
+        db.collection("locations").add({
+            latitude: lat,
+            longitude: lon,
+            timestamp: new Date()
+        }).then(() => {
+            console.log("Location saved:", lat, lon);
+        }).catch((error) => {
+            console.error("Error saving location:", error);
+        });
+    } else {
+        alert("Koordinat tidak valid. Pastikan nilai latitude dan longitude benar.");
+    }
 });
-
-
-function dmsToDecimal(deg, min, sec) {
-  return deg + (min / 60) + (sec / 3600);
-}
