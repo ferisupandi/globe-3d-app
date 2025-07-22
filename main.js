@@ -74,3 +74,24 @@ document.getElementById("coordForm").addEventListener("submit", function(e) {
         alert("Koordinat tidak valid. Pastikan nilai latitude dan longitude benar.");
     }
 });
+
+const viewer = new Cesium.Viewer('cesiumContainer', {
+  shouldAnimate: true
+});
+
+// Buat waktu awal dan akhir dalam UTC
+const start = Cesium.JulianDate.fromDate(new Date(Date.UTC(2025, 6, 22, 0, 0, 0))); // 22 Juli 2025
+const stop = Cesium.JulianDate.addHours(start, 24, new Cesium.JulianDate());
+
+// Tambahkan offset GMT+7
+const gmt7Offset = 7;
+const adjustedStart = Cesium.JulianDate.addHours(start, gmt7Offset, new Cesium.JulianDate());
+const adjustedStop = Cesium.JulianDate.addHours(stop, gmt7Offset, new Cesium.JulianDate());
+
+// Atur waktu di viewer
+viewer.clock.startTime = adjustedStart.clone();
+viewer.clock.stopTime = adjustedStop.clone();
+viewer.clock.currentTime = adjustedStart.clone();
+viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
+viewer.clock.multiplier = 1;
+viewer.timeline.zoomTo(adjustedStart, adjustedStop);
