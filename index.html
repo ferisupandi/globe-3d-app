@@ -1,13 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>3D Globe with CesiumJS</title>
-    https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js
-    https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css
-    <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets">
-
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <style>
         #cesiumContainer {
             width: 100%;
@@ -23,26 +20,22 @@
     <div id="formContainer">
         <h3>Input Koordinat</h3>
         <form id="coordForm">
-            <h4>Input Koordinat (DMS)</h4>
-            Latitude: 
-            <input type="number" id="latDeg" placeholder="Derajat">°
-            <input type="number" id="latMin" placeholder="Menit">' 
-            <input type="number" id="latSec" placeholder="Detik">"
-            <br>
-            Longitude: 
-            <input type="number" id="lonDeg" placeholder="Derajat">°
-            <input type="number" id="lonMin" placeholder="Menit">' 
-            <input type="number" id="lonSec" placeholder="Detik">"
-            <br><br>
+            <label for="latitude">Latitude:</label>
+            <input type="number" step="any" id="latitude" required>
+            <label for="longitude">Longitude:</label>
+            <input type="number" step="any" id="longitude" required>
             <button type="submit">Tambahkan Lokasi</button>
         </form>
-
+    </div>
+    <div id="locationList">
+        <h3>Daftar Lokasi Tersimpan</h3>
+        <ul id="list"></ul>
     </div>
 
     <div id="cesiumContainer"></div>
 
-    <script src="https://wwwfirebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebaseebase-firestore-compat.js"></script></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
