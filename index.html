@@ -27,6 +27,21 @@
             <input type="number" step="any" id="longitude" required>
             <button type="submit">Tambahkan Lokasi</button>
         </form>
+        <form id="coordForm">
+            <h4>Input Koordinat (DMS)</h4>
+            Latitude: 
+            <input type="number" id="latDeg" placeholder="Derajat">°
+            <input type="number" id="latMin" placeholder="Menit">' 
+            <input type="number" id="latSec" placeholder="Detik">"
+            <br>
+            Longitude: 
+            <input type="number" id="lonDeg" placeholder="Derajat">°
+            <input type="number" id="lonMin" placeholder="Menit">' 
+            <input type="number" id="lonSec" placeholder="Detik">"
+            <br><br>
+            <button type="submit">Tambahkan Lokasi</button>
+        </form>
+
     </div>
 
     <div id="cesiumContainer"></div>
