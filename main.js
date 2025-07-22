@@ -95,3 +95,8 @@ viewer.clock.currentTime = adjustedStart.clone();
 viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
 viewer.clock.multiplier = 1;
 viewer.timeline.zoomTo(adjustedStart, adjustedStop);
+
+const nowUTC = Cesium.JulianDate.fromDate(new Date());
+const nowGMT7 = Cesium.JulianDate.addHours(nowUTC, 7, new Cesium.JulianDate());
+viewer.clock.currentTime = nowGMT7.clone();
+
