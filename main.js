@@ -17,7 +17,7 @@ const db = firebase.firestore();
 Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2ODljNTg1ZS1hYzBiLTQzZGUtOWI4Ni1mMGQyODM5YzFhZmUiLCJpZCI6MzIzNjc3LCJpYXQiOjE3NTMxNTM5NDh9.WXILGF9zFsQLUbvHZjp3YIQfusw1LmNrN1PS9Jf_9Q8';
 const viewer = new Cesium.Viewer('cesiumContainer', {
     terrainProvider: Cesium.createWorldTerrain()
-    shouldAnimate: true
+    // shouldAnimate: true
 });
 
 // Function to validate coordinates
