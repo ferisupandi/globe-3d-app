@@ -19,15 +19,30 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
     terrainProvider: Cesium.createWorldTerrain()
 });
 
-// Load saved coordinates from Firestore
+// Function to validate coordinates
+function isValidCoordinate(lat, lon) {
+    return typeof lat === 'number' && typeof lon === 'number' &&
+           !isNaN(lat) && !isNaN(lon) &&
+           lat >= -90 && lat <= 90 &&
+           lon >= -180 && lon <= 180;
+}
+
+// Load existing locations from Firestore
 db.collection("locations").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
         const data = doc.data();
-        viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(data.longitude, data.latitude),
-            point: { pixelSize: 10, color: Cesium.Color.RED },
-            label: { text: `(${data.latitude}, ${data.longitude})` }
-        });
+        const lat = data.latitude;
+        const lon = data.longitude;
+
+        if (isValidCoordinate(lat, lon)) {
+            viewer.entities.add({
+                position: Cesium.Cartesian3.fromDegrees(lon, lat),
+                point: { pixelSize: 10, color: Cesium.Color.RED },
+                label: { text: `(${lat.toFixed(5)}, ${lon.toFixed(5)})` }
+            });
+        } else {
+            console.warn("Invalid coordinate skipped:", data);
+        }
     });
 });
 
@@ -37,32 +52,25 @@ document.getElementById("coordForm").addEventListener("submit", function(e) {
     const lat = parseFloat(document.getElementById("latitude").value);
     const lon = parseFloat(document.getElementById("longitude").value);
 
-    // Add point to Cesium globe
-    viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(lon, lat),
-        point: { pixelSize: 10, color: Cesium.Color.BLUE },
-        label: { text: `(${lat}, ${lon})` }
-    });
+    if (isValidCoordinate(lat, lon)) {
+        // Add to Cesium globe
+        viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(lon, lat),
+            point: { pixelSize: 10, color: Cesium.Color.BLUE },
+            label: { text: `(${lat.toFixed(5)}, ${lon.toFixed(5)})` }
+        });
 
-    // Save to Firestore
-    db.collection("locations").add({ latitude: lat, longitude: lon })
-        .then(() => console.log("Location saved"))
-        .catch((error) => console.error("Error saving location: ", error));
-});
-
-viewer.entities.add({
-    position: Cesium.Cartesian3.fromDegrees(longitude, latitude),
-    point: { pixelSize: 10, color: Cesium.Color.RED },
-    label: { text: `(${latitude}, ${longitude})` }
-});
-
-const listElement = document.getElementById("list");
-
-db.collection("locations").get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const item = document.createElement("li");
-        item.textContent = `Latitude: ${data.latitude}, Longitude: ${data.longitude}`;
-        listElement.appendChild(item);
-    });
+        // Save to Firestore
+        db.collection("locations").add({
+            latitude: lat,
+            longitude: lon,
+            timestamp: new Date()
+        }).then(() => {
+            console.log("Location saved:", lat, lon);
+        }).catch((error) => {
+            console.error("Error saving location:", error);
+        });
+    } else {
+        alert("Koordinat tidak valid. Pastikan nilai latitude dan longitude benar.");
+    }
 });
